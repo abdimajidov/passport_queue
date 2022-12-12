@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Main page</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <link rel="icon" href="../static/img/tittle.png" type="image/x-icon">
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+<div id="header">
+    <div id="container">
+        <h1>
+            <marquee>Elektron navbat tizimi</marquee>
+        </h1>
+    </div>
+</div>
+<div class="body">
+    <div class="body-items">
+        <h1>Joriy navbat</h1>
+        <div class="main-block">
+            <h1 id="current-queue">Navbat raqami</h1>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    var socket = new SockJS("/websocket-connection");
+    stompclient = Stomp.over(socket);
+    stompclient.connect({}, function (frame) {
+        stompclient.subscribe("/topic/queue", function (payload) {
+            console.log(payload);
+            document.getElementById("current-queue").innerText = payload.body;
+        })
+    });
+</script>
+</html>
+
